@@ -49,51 +49,51 @@
   },
   {
     "title": "Puig Samba Shoes",
-    "price": "No price available"
+    "price": "$100"
   },
   {
     "title": "Gazelle Indoor Shoes",
-    "price": "No price available"
+    "price": "$120"
   },
   {
     "title": "Superlite 3 Hat",
-    "price": "No price available"
+    "price": "$26"
+  },
+  {
+    "title": "Trefoil Essentials Shorts",
+    "price": "$40"
   },
   {
     "title": "Adicolor Pleather Shorts",
-    "price": "No price available"
+    "price": "$70"
   },
   {
     "title": "Adicolor 3-Stripes Loose French Terry Wide Leg Pants",
-    "price": "No price available"
+    "price": "$85"
   },
   {
     "title": "Premium Essentials Denim Track Top",
-    "price": "No price available"
-  },
-  {
-    "title": "Tee Kids",
-    "price": "No price available"
+    "price": "$100"
   },
   {
     "title": "Athletic Cushioned Crew Socks 6 Pairs",
-    "price": "No price available"
+    "price": "$22"
   },
   {
     "title": "Handball Spezial Shoes",
-    "price": "No price available"
+    "price": "$110"
   },
   {
     "title": "Samba OG Shoes",
-    "price": "No price available"
+    "price": "$120"
   },
   {
     "title": "Samba OG Shoes",
-    "price": "No price available"
+    "price": "$100"
   },
   {
     "title": "Samba OG Shoes",
-    "price": "No price available"
+    "price": "$100"
   },
   {
     "title": "SL 72 OG Shoes",
@@ -109,47 +109,51 @@
   },
   {
     "title": "Gazelle Indoor Shoes",
-    "price": "No price available"
+    "price": "$120"
   },
   {
     "title": "Campus 00s Shoes",
-    "price": "No price available"
+    "price": "$90"
   },
   {
     "title": "Samba XLG Shoes",
-    "price": "No price available"
+    "price": "$110"
   },
   {
     "title": "Campus 00s Elastic Laces Shoes Kids",
-    "price": "No price available"
+    "price": "$70"
   },
   {
     "title": "Racer TR23 Shoes Kids",
-    "price": "No price available"
+    "price": "$55"
   },
   {
     "title": "Ultrarun 5 Shoes Kids",
-    "price": "No price available"
+    "price": "$55"
   },
   {
     "title": "Gazelle Indoor Shoes",
-    "price": "No price available"
+    "price": "$120"
   },
   {
     "title": "Ultrarun 5 Shoes Kids",
-    "price": "No price available"
+    "price": "$55"
   },
   {
     "title": "Ultrarun 5 Shoes Kids",
-    "price": "No price available"
+    "price": "$60"
   },
   {
     "title": "Y-3 Gazelle",
-    "price": "No price available"
+    "price": "$350"
+  },
+  {
+    "title": "Gazelle Shoes Kids",
+    "price": "$70"
   },
   {
     "title": "Gazelle Indoor Shoes",
-    "price": "No price available"
+    "price": "$120"
   },
   {
     "title": "SL 72 RS Shoes Kids",
@@ -168,6 +172,10 @@
     "price": "No price available"
   },
   {
+    "title": "Handball Spezial Shoes Kids",
+    "price": "No price available"
+  },
+  {
     "title": "Crazy Mad IIInfinity Shoes",
     "price": "No price available"
   },
@@ -176,19 +184,11 @@
     "price": "No price available"
   },
   {
+    "title": "ULTRABOOST 1.0 SHOES",
+    "price": "No price available"
+  },
+  {
     "title": "Superstar Shoes",
-    "price": "No price available"
-  },
-  {
-    "title": "Samba OG Shoes",
-    "price": "No price available"
-  },
-  {
-    "title": "Mahomes 2 Impact FLX Race Against Time Training Shoes",
-    "price": "No price available"
-  },
-  {
-    "title": "SL 72 RS Shoes Kids",
     "price": "No price available"
   }
 ]

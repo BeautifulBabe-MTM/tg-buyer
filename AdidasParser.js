@@ -10,16 +10,33 @@ async function fetchAdidasProducts() {
             waitUntil: 'networkidle2',
         });
 
-        await page.waitForSelector('.grid-item', { timeout: 60000 });
+        // Функция для создания задержки
+        const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-        await page.waitForFunction(() => document.querySelectorAll('.grid-item').length > 0, { timeout: 60000 });
+        // Функция для медленной прокрутки страницы
+        const slowScroll = async () => {
+            let previousHeight;
+            let currentHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+            console.log(`Initial height: ${currentHeight}`);
 
-        const html = await page.content();
-        console.log('HTML content:', html.substring(0, 2000)); 
+            while (true) {
+                // Прокрутка страницы на 2000 пикселей вниз
+                await page.evaluate(() => window.scrollBy(0, 2000));
+                await delay(10000); // Увеличенное время ожидания для загрузки новых элементов
 
-        const productCount = await page.evaluate(() => document.querySelectorAll('.grid-item').length);
-        console.log('Number of product cards found:', productCount);
+                // Проверка высоты страницы
+                previousHeight = currentHeight;
+                currentHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+                console.log(`Current height: ${currentHeight}`);
 
+                // Если высота не изменилась или достигнут конец страницы
+                if (currentHeight === previousHeight) break;
+            }
+        };
+
+        await slowScroll();
+
+        // Получение контента страницы после прокрутки
         const products = await page.evaluate(() => {
             const items = [];
             document.querySelectorAll('.grid-item').forEach(element => {
