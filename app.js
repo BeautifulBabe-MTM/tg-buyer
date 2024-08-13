@@ -16,7 +16,6 @@ bot.onText(/\/start/, (msg) => {
 
     if (registeredUsers.has(chatId)) {
         bot.sendMessage(chatId, 'Вы уже зарегистрированы. Команды бота теперь доступны.');
-        // Отправляем пользователю список магазинов, если он уже зарегистрирован
         const inlineKeyboard = [
             [{ text: 'Adidas', callback_data: 'store_0' }, { text: 'Zara', callback_data: 'store_1' }],
             [{ text: 'Nike', callback_data: 'store_2' }, { text: 'Puma', callback_data: 'store_3' }],
@@ -53,8 +52,8 @@ bot.on('contact', async (msg) => {
     const phoneNumber = msg.contact.phone_number;
     const nameOfUser = msg.contact.first_name;
 
-    if (phoneNumber === '212654836803' || phoneNumber === '380959312506') {
-        registeredUsers.add(chatId); // Добавляем пользователя в зарегистрированные
+    if (phoneNumber === '212654836803' || phoneNumber === '380959312506' || phoneNumber === "380685247141") {
+        registeredUsers.add(chatId);
 
         bot.sendMessage(chatId, `Привет, ${nameOfUser}\nДоступ разрешён! Команды бота теперь доступны.`, {
             reply_markup: {
@@ -83,11 +82,12 @@ bot.on('contact', async (msg) => {
 bot.on('callback_query', async (callbackQuery) => {
     const msg = callbackQuery.message;
     const chatId = msg.chat.id;
+    const messageId = msg.message_id;
     const callbackData = callbackQuery.data;
 
     if (callbackData.startsWith('store_')) {
         const storeIndex = parseInt(callbackData.split('_')[1]);
-        const selectedStore = stores[storeIndex]; // Получаем название магазина из массива
+        const selectedStore = stores[storeIndex];
 
         bot.sendMessage(chatId, `Вы выбрали: ${selectedStore}`);
 
@@ -103,7 +103,6 @@ bot.on('callback_query', async (callbackQuery) => {
                 bot.sendMessage(chatId, `Название: ${product.title}\nЦена: ${product.price}\n\n\n`);
             });
 
-            // Отправка сообщения с инлайн кнопкой через 5 секунд
             setTimeout(() => {
                 bot.sendMessage(chatId, 'Хотите добавить все товары в канал?', {
                     reply_markup: {
@@ -117,8 +116,8 @@ bot.on('callback_query', async (callbackQuery) => {
             bot.sendMessage(chatId, 'Этот магазин еще не поддерживается.');
         }
     } else if (callbackData === 'add_to_channel') {
+        bot.deleteMessage(chatId, messageId);
         // Логика для добавления товаров в канал
-        // Подтверждение добавления
         bot.sendMessage(chatId, 'Товары будут добавлены в канал через 3 секунды...');
 
         setTimeout(async () => {
