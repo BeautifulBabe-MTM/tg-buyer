@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-async function fetchAdidasProducts() {
+async function fetchAdidasProducts(url) {
     try {
         const browser = await puppeteer.launch({ headless: false });
         const page = await browser.newPage();
@@ -13,7 +13,7 @@ async function fetchAdidasProducts() {
 
         while (hasMorePages) {
             console.log(`Fetching page ${pageNumber}...`);
-            await page.goto(`https://www.adidas.com/us/new_arrivals?start=${(pageNumber - 1) * 48}`, { waitUntil: 'networkidle2' });
+            await page.goto(`${url}?start=${(pageNumber - 1) * 48}`, { waitUntil: 'networkidle2' });
 
             const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
             const slowScroll = async () => {
