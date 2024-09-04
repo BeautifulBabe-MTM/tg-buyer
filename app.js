@@ -4,13 +4,18 @@ const { fetchZaraProducts } = require('./ZaraParser');
 const { fetchNikeProducts } = require('./NikeParser');
 const { fetchPumaProducts } = require('./PumaParser');
 const { fetchBershkaProducts } = require('./BershkaParser');
+const { fetchGapProducts } = require('./GapParser');
+const { fetchLevisProducts } = require('./LevisParser');
+const { fetchReebokProducts } = require('./ReebokParser');
+const { fetchLacosteProducts } = require('./LacosteParser');
+
 
 const token = '6673628321:AAE98WdYUWbeh30QJc3REwfEWei1qOIr2CU';
 const bot = new TelegramBot(token, { polling: true });
 
 const stores = [
-    'Adidas', 'Zara', 'Nike', 'Puma', 'Bershka',
-    'магаз 6', 'магаз 7', 'магаз 8', 'магаз 9', 'магаз 10'
+    'Adidas®', 'Zara®', 'Nike®', 'Puma®', 'Bershka®',
+    'Gap®', `Levi's®`, 'Reebok®', 'Lacoste', 'магаз 10'
 ];
 
 const registeredUsers = new Set();
@@ -23,9 +28,9 @@ bot.onText(/\/start/, (msg) => {
         const inlineKeyboard = [
             [{ text: 'Adidas', callback_data: 'store_0' }, { text: 'Zara', callback_data: 'store_1' }],
             [{ text: 'Nike', callback_data: 'store_2' }, { text: 'Puma', callback_data: 'store_3' }],
-            [{ text: 'Bershka', callback_data: 'store_4' }, { text: 'магаз 6', callback_data: 'store_5' }],
-            [{ text: 'магаз 7', callback_data: 'store_6' }, { text: 'магаз 8', callback_data: 'store_7' }],
-            [{ text: 'магаз 9', callback_data: 'store_8' }, { text: 'магаз 10', callback_data: 'store_9' }]
+            [{ text: 'Bershka', callback_data: 'store_4' }, { text: 'Gap', callback_data: 'store_5' }],
+            [{ text: `Levi's®`, callback_data: 'store_6' }, { text: 'Reebok', callback_data: 'store_7' }],
+            [{ text: 'Lacoste', callback_data: 'store_8' }, { text: 'магаз 10', callback_data: 'store_9' }]
         ];
 
         bot.sendMessage(chatId, 'Выберите магазин:', {
@@ -68,9 +73,9 @@ bot.on('contact', async (msg) => {
         const inlineKeyboard = [
             [{ text: 'Adidas', callback_data: 'store_0' }, { text: 'Zara', callback_data: 'store_1' }],
             [{ text: 'Nike', callback_data: 'store_2' }, { text: 'Puma', callback_data: 'store_3' }],
-            [{ text: 'Bershka', callback_data: 'store_4' }, { text: 'магаз 6', callback_data: 'store_5' }],
-            [{ text: 'магаз 7', callback_data: 'store_6' }, { text: 'магаз 8', callback_data: 'store_7' }],
-            [{ text: 'магаз 9', callback_data: 'store_8' }, { text: 'магаз 10', callback_data: 'store_9' }]
+            [{ text: 'Bershka', callback_data: 'store_4' }, { text: 'Gap', callback_data: 'store_5' }],
+            [{ text: `Levi's`, callback_data: 'store_6' }, { text: 'Reebok', callback_data: 'store_7' }],
+            [{ text: 'Lacoste', callback_data: 'store_8' }, { text: 'магаз 10', callback_data: 'store_9' }]
         ];
 
         bot.sendMessage(chatId, 'Выберите магазин:', {
@@ -118,7 +123,7 @@ bot.on('callback_query', async (callbackQuery) => {
             }, 5000);
         }
 
-        else if  (storeIndex === 1) {
+        else if (storeIndex === 1) {
             const products = await fetchZaraProducts();
 
             if (products.length === 0) {
@@ -206,17 +211,88 @@ bot.on('callback_query', async (callbackQuery) => {
                 });
             }, 5000);
         }
+        else if (storeIndex === 5) {
+            const products = await fetchGapProducts();
+
+            if (products.length === 0) {
+                bot.sendMessage(chatId, 'Найдено 0 товаров или произошла ошибка.');
+                return;
+            }
+
+            products.forEach(product => {
+                bot.sendMessage(chatId, `Название: ${product.title}\nЦена: ${product.price}\n\n\n`);
+            });
+
+            setTimeout(() => {
+                bot.sendMessage(chatId, 'Хотите добавить все товары в канал?', {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [{ text: 'Добавить все товары в канал', callback_data: 'add_to_channel' }]
+                        ]
+                    }
+                });
+            }, 5000);
+        }
+        else if (storeIndex === 6) {
+            const products = await fetchLevisProducts();
+
+            if (products.length === 0) {
+                bot.sendMessage(chatId, 'Найдено 0 товаров или произошла ошибка.');
+                return;
+            }
+
+            products.forEach(product => {
+                bot.sendMessage(chatId, `Название: ${product.title}\nЦена: ${product.price}\n\n\n`);
+            });
+
+            setTimeout(() => {
+                bot.sendMessage(chatId, 'Хотите добавить все товары в канал?', {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [{ text: 'Добавить все товары в канал', callback_data: 'add_to_channel' }]
+                        ]
+                    }
+                });
+            }, 5000);
+        }
+        else if (storeIndex === 7) {
+            bot.sendMessage(chatId, 'На момент разработки магазин Reebok не работал.')
+        }
+        else if (storeIndex === 8) {
+            const products = await fetchLacosteProducts();
+
+            if (products.length === 0) {
+                bot.sendMessage(chatId, 'Найдено 0 товаров или произошла ошибка.');
+                return;
+            }
+
+            products.forEach(product => {
+                bot.sendMessage(chatId, `Название: ${product.title}\nЦена: ${product.price}\n\n\n`);
+            });
+
+            setTimeout(() => {
+                bot.sendMessage(chatId, 'Хотите добавить все товары в канал?', {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [{ text: 'Добавить все товары в канал', callback_data: 'add_to_channel' }]
+                        ]
+                    }
+                });
+            }, 5000);
+        }
         else {
             bot.sendMessage(chatId, 'Этот магазин еще не поддерживается.');
         }
     } else if (callbackData === 'add_to_channel') {
         bot.deleteMessage(chatId, messageId);
         // логика для добавления товаров в канал
-        bot.sendMessage(chatId, 'Товары будут добавлены в канал через 3 секунды...');
+        const confirmationMessage = await bot.sendMessage(chatId, 'Товары будут добавлены в канал через 3 секунды...');
 
+        bot.deleteMessage(chatId, messageId)
         setTimeout(async () => {
             // и здесь можно добавить логику для добавления товаров в канал
             bot.sendMessage(chatId, 'Товары добавлены в канал.');
+            bot.deleteMessage(chatId, confirmationMessage.message_id);
         }, 3000);
     }
 });
