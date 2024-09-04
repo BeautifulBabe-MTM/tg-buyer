@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-async function fetchAdidasProducts() {
+async function fetchNikeProducts() {
     try {
         const browser = await puppeteer.launch({ headless: false });
         const page = await browser.newPage();
@@ -13,7 +13,7 @@ async function fetchAdidasProducts() {
 
         while (hasMorePages) {
             console.log(`Fetching page ${pageNumber}...`);
-            await page.goto(`https://www.adidas.com/us/new_arrivals?start=${(pageNumber - 1) * 48}`, { waitUntil: 'networkidle2' });
+            await page.goto(`https://www.nike.com/w/womens-shorts-38fphz5e1x6`, { waitUntil: 'networkidle2' });
 
             const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
             const slowScroll = async () => {
@@ -35,9 +35,10 @@ async function fetchAdidasProducts() {
 
             const products = await page.evaluate(() => {
                 const items = [];
-                document.querySelectorAll('.grid-item').forEach(element => {
-                    const title = element.querySelector('.glass-product-card__title')?.textContent.trim() || 'No title available';
-                    const price = element.querySelector('.gl-price-item')?.textContent.trim() || 'No price available';
+                document.querySelectorAll('.product-card').forEach(element => {
+                    const title = element.querySelector('.product-card__titles')?.textContent.trim() || 'No title available';
+                    const img = element.querySelector('media__wrapper media__wrapper--fill')?.textContent.trim() || 'No image'
+                    const price = element.querySelector('.product-price')?.textContent.trim() || 'No price available';
                     if (title && price && price !== 'No price available') {
                         items.push({ title, price });
                     }
@@ -65,7 +66,7 @@ async function fetchAdidasProducts() {
 
         await browser.close();
 
-        fs.writeFile('adidas.json', JSON.stringify(allProducts, null, 2), (err) => {
+        fs.writeFile('nike.json', JSON.stringify(allProducts, null, 2), (err) => {
             if (err) {
                 console.error('Error writing file:', err);
             } else {
@@ -80,4 +81,4 @@ async function fetchAdidasProducts() {
     }
 }
 
-module.exports = { fetchAdidasProducts };
+module.exports = { fetchNikeProducts };

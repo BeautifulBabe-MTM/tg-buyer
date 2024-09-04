@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-async function fetchAdidasProducts() {
+async function fetchBershkaProducts() {
     try {
         const browser = await puppeteer.launch({ headless: false });
         const page = await browser.newPage();
@@ -13,7 +13,7 @@ async function fetchAdidasProducts() {
 
         while (hasMorePages) {
             console.log(`Fetching page ${pageNumber}...`);
-            await page.goto(`https://www.adidas.com/us/new_arrivals?start=${(pageNumber - 1) * 48}`, { waitUntil: 'networkidle2' });
+            await page.goto(`https://www.bershka.com/ua/en/bershkastyle/858854109.html?style=66206380&gender=66486573&fromGallery=true`, { waitUntil: 'networkidle2' });
 
             const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
             const slowScroll = async () => {
@@ -35,9 +35,9 @@ async function fetchAdidasProducts() {
 
             const products = await page.evaluate(() => {
                 const items = [];
-                document.querySelectorAll('.grid-item').forEach(element => {
-                    const title = element.querySelector('.glass-product-card__title')?.textContent.trim() || 'No title available';
-                    const price = element.querySelector('.gl-price-item')?.textContent.trim() || 'No price available';
+                document.querySelectorAll('.bsk-grid__item').forEach(element => {
+                    const title = element.querySelector('.product-text')?.textContent.trim() || 'No title available';
+                    const price = element.querySelector('.current-price-elem')?.textContent.trim() || 'No price available';
                     if (title && price && price !== 'No price available') {
                         items.push({ title, price });
                     }
@@ -80,4 +80,4 @@ async function fetchAdidasProducts() {
     }
 }
 
-module.exports = { fetchAdidasProducts };
+module.exports = { fetchBershkaProducts };

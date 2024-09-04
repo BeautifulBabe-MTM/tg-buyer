@@ -1,5 +1,9 @@
 const TelegramBot = require('node-telegram-bot-api');
 const { fetchAdidasProducts } = require('./AdidasParser');
+const { fetchZaraProducts } = require('./ZaraParser');
+const { fetchNikeProducts } = require('./NikeParser');
+const { fetchPumaProducts } = require('./PumaParser');
+const { fetchBershkaProducts } = require('./BershkaParser');
 
 const token = '6673628321:AAE98WdYUWbeh30QJc3REwfEWei1qOIr2CU';
 const bot = new TelegramBot(token, { polling: true });
@@ -112,16 +116,106 @@ bot.on('callback_query', async (callbackQuery) => {
                     }
                 });
             }, 5000);
-        } else {
+        }
+
+        else if  (storeIndex === 1) {
+            const products = await fetchZaraProducts();
+
+            if (products.length === 0) {
+                bot.sendMessage(chatId, 'Найдено 0 товаров или произошла ошибка.');
+                return;
+            }
+
+            products.forEach(product => {
+                bot.sendMessage(chatId, `Название: ${product.title}\nЦена: ${product.price}\n\n\n`);
+            });
+
+            setTimeout(() => {
+                bot.sendMessage(chatId, 'Хотите добавить все товары в канал?', {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [{ text: 'Добавить все товары в канал', callback_data: 'add_to_channel' }]
+                        ]
+                    }
+                });
+            }, 5000);
+        }
+        else if (storeIndex === 2) {
+            const products = await fetchNikeProducts();
+
+            if (products.length === 0) {
+                bot.sendMessage(chatId, 'Найдено 0 товаров или произошла ошибка.');
+                return;
+            }
+
+            products.forEach(product => {
+                bot.sendMessage(chatId, `Название: ${product.title}\nЦена: ${product.price}\n\n\n`);
+            });
+
+            setTimeout(() => {
+                bot.sendMessage(chatId, 'Хотите добавить все товары в канал?', {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [{ text: 'Добавить все товары в канал', callback_data: 'add_to_channel' }]
+                        ]
+                    }
+                });
+            }, 5000);
+        }
+        else if (storeIndex === 3) {
+            const products = await fetchPumaProducts();
+
+            if (products.length === 0) {
+                bot.sendMessage(chatId, 'Найдено 0 товаров или произошла ошибка.');
+                return;
+            }
+
+            products.forEach(product => {
+                bot.sendMessage(chatId, `Название: ${product.title}\nЦена: ${product.price}\n\n\n`);
+            });
+
+            setTimeout(() => {
+                bot.sendMessage(chatId, 'Хотите добавить все товары в канал?', {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [{ text: 'Добавить все товары в канал', callback_data: 'add_to_channel' }]
+                        ]
+                    }
+                });
+            }, 5000);
+        }
+        else if (storeIndex === 4) {
+            const products = await fetchBershkaProducts();
+
+            if (products.length === 0) {
+                bot.sendMessage(chatId, 'Найдено 0 товаров или произошла ошибка.');
+                return;
+            }
+
+            products.forEach(product => {
+                bot.sendMessage(chatId, `Название: ${product.title}\nЦена: ${product.price}\n\n\n`);
+            });
+
+            setTimeout(() => {
+                bot.sendMessage(chatId, 'Хотите добавить все товары в канал?', {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [{ text: 'Добавить все товары в канал', callback_data: 'add_to_channel' }]
+                        ]
+                    }
+                });
+            }, 5000);
+        }
+        else {
             bot.sendMessage(chatId, 'Этот магазин еще не поддерживается.');
         }
     } else if (callbackData === 'add_to_channel') {
         bot.deleteMessage(chatId, messageId);
-        // Логика для добавления товаров в канал
+        // логика для добавления товаров в канал
         bot.sendMessage(chatId, 'Товары будут добавлены в канал через 3 секунды...');
 
         setTimeout(async () => {
-            // Здесь можно добавить логику для добавления товаров в канал
+            // и здесь можно добавить логику для добавления товаров в канал
             bot.sendMessage(chatId, 'Товары добавлены в канал.');
         }, 3000);
     }
