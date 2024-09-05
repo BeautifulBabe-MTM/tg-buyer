@@ -6,10 +6,13 @@ async function fetchAdidasProducts(url) {
         const browser = await puppeteer.launch({ headless: false });
         const page = await browser.newPage();
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
-        
+
         const allProducts = [];
         let hasMorePages = true;
         let pageNumber = 1;
+
+        // Проверяем, заканчивается ли домен после "adidas" на ".ua"
+        const isUA = url.includes('adidas.ua');
 
         while (hasMorePages) {
             console.log(`Fetching page ${pageNumber}...`);
@@ -33,17 +36,24 @@ async function fetchAdidasProducts(url) {
 
             await slowScroll();
 
-            const products = await page.evaluate(() => {
+            const products = await page.evaluate((isUA) => {
                 const items = [];
-                document.querySelectorAll('.grid-item').forEach(element => {
-                    const title = element.querySelector('.glass-product-card__title')?.textContent.trim() || 'No title available';
-                    const price = element.querySelector('.gl-price-item')?.textContent.trim() || 'No price available';
+
+                const productSelector = isUA ? '.product' : '.grid-item';
+
+                document.querySelectorAll(productSelector).forEach(element => {
+                    const titleSelector = isUA ? '.product__title' : '.glass-product-card__title';
+                    const priceSelector = isUA ? '.price__first' : '.gl-price-item';
+
+                    const title = element.querySelector(titleSelector)?.textContent.trim() || 'No title available';
+                    const price = element.querySelector(priceSelector)?.textContent.trim() || 'No price available';
                     if (title && price && price !== 'No price available') {
                         items.push({ title, price });
                     }
                 });
+
                 return items;
-            });
+            }, isUA);
 
             if (products.length > 0) {
                 allProducts.push(...products);

@@ -89,7 +89,7 @@ bot.on('callback_query', (callbackQuery) => {
         const storeIndex = parseInt(callbackData.split('_')[1]);
         const selectedStore = stores[storeIndex];
 
-        userStoreSelection.set(chatId, selectedStore); // Save the store selection for the user
+        userStoreSelection.set(chatId, selectedStore); 
 
         bot.sendMessage(chatId, `Вы выбрали: ${selectedStore}\nПожалуйста, отправьте ссылку на товары.`);
     }
@@ -143,6 +143,6 @@ bot.on('message', async (msg) => {
                 });
             }, 5000);
         }
-        userStoreSelection.delete(chatId); // Clear the selection after processing
+        userStoreSelection.delete(chatId); 
     }
 });
